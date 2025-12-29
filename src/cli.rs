@@ -1,8 +1,8 @@
 use std::env;
 
-use aegrep::types::MyErrors;
+use aegrep::types::{Config, MyErrors};
 
-pub fn parse_args() -> Result<(String, Vec<String>), aegrep::types::MyErrors> {
+pub fn parse_args() -> Result<Config, MyErrors> {
     let mut args: Vec<String> = env::args().collect();
     args.reverse();
 
@@ -12,5 +12,5 @@ pub fn parse_args() -> Result<(String, Vec<String>), aegrep::types::MyErrors> {
         return Err(MyErrors::MissingArgFilesError);
     }
 
-    Ok((query, args))
+    Ok(Config::new(query, args))
 }

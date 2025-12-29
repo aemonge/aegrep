@@ -3,7 +3,12 @@ use aegrep::types::MyErrors;
 
 fn main() {
     let _ = match cli::parse_args() {
-        Ok((query, files)) => aegrep::search(query, files),
+        Ok(config) => aegrep::search(
+            config.pattern.clone(),
+            config.files.clone(),
+            config.is_quiet(),
+        ),
+        // Ok(config) => aegrep::search(config.pattern, config.files, config.is_quiet()),
         Err(MyErrors::MissingArgPatternError) => {
             panic!("Missing pattern to search for")
         }
