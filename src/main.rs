@@ -1,18 +1,20 @@
+mod cli;
 use aegrep::types::MyErrors;
-use std::env;
 
 fn main() {
-    let mut args: Vec<String> = env::args().collect();
-    args.reverse();
-    let _name = args.pop().expect("Should at least contain the script name");
-
-    match aegrep::search(args) {
-        Ok(_) => (),
+    let _ = match cli::parse_args() {
+        Ok((query, files)) => aegrep::search(query, files),
+        Err(MyErrors::MissingArgPatternError) => {
+            panic!("Missing pattern to search for")
+        }
+        Err(MyErrors::MissingArgFilesError) => {
+            panic!("Missing file to search withing")
+        }
         Err(MyErrors::MissingArgsError) => {
             panic!("Missing arguments")
         }
-        Err(MyErrors::FileReadError(f)) => {
-            panic!("Error while reading: {}", f)
+        Err(MyErrors::FileReadError(e)) => {
+            panic!("Error reading file: {}", e)
         }
-    }
+    };
 }

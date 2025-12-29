@@ -2,6 +2,8 @@
 pub enum MyErrors {
     FileReadError(String),
     MissingArgsError,
+    MissingArgFilesError,
+    MissingArgPatternError,
 }
 
 // impl From<std::io::Error> for MyErrors {
