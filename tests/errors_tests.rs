@@ -4,7 +4,7 @@ use aegrep::search;
 fn search_error_no_files() {
     let query = String::from("duck");
     let files = vec![String::from("test.tmp")];
-    let result = search(query, files, true);
+    let result = search(query, files, true, false);
 
     assert!(result.is_err())
 }
@@ -13,7 +13,7 @@ fn search_error_no_files() {
 fn search_error_second_file_broke() {
     let query = String::from("duck");
     let files = vec![String::from("poem.txt"), String::from("test.tmp")];
-    let result = search(query, files, true);
+    let result = search(query, files, true, false);
 
     assert!(result.is_err())
 }
@@ -22,7 +22,7 @@ fn search_error_second_file_broke() {
 fn search_found_a_file() {
     let query = String::from("duck");
     let files = vec![String::from("poem.txt")];
-    let result = search(query, files, true);
+    let result = search(query, files, true, false);
 
     assert!(result.is_ok())
 }
@@ -31,7 +31,7 @@ fn search_found_a_file() {
 fn search_found_two_file() {
     let query = String::from("duck");
     let files = vec![String::from("poem.txt"), String::from("poem.txt")];
-    let result = search(query, files, true);
+    let result = search(query, files, true, false);
 
     assert!(result.is_ok())
 }

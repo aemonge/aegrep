@@ -6,11 +6,12 @@ pub enum MyErrors {
     MissingArgPatternError,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Config {
     pub pattern: String,
     pub files: Vec<String>,
     quiet: bool,
+    ignore_case: bool,
 }
 
 impl Config {
@@ -19,6 +20,7 @@ impl Config {
             pattern,
             files,
             quiet: false,
+            ignore_case: false,
         }
     }
 
@@ -37,8 +39,17 @@ impl Config {
         self
     }
 
-    pub fn is_quiet(self) -> bool {
+    pub fn is_quiet(&self) -> bool {
         self.quiet
+    }
+
+    pub fn with_case_ignored(mut self, ignore_case: bool) -> Self {
+        self.ignore_case = ignore_case;
+        self
+    }
+
+    pub fn is_case_ignored(&self) -> bool {
+        self.ignore_case
     }
 }
 

@@ -1,3 +1,5 @@
+use std::env;
+
 use aegrep::types::{Config, MyErrors};
 
 pub fn parse_args(mut args: Vec<String>) -> Result<Config, MyErrors> {
@@ -8,8 +10,11 @@ pub fn parse_args(mut args: Vec<String>) -> Result<Config, MyErrors> {
     if args.is_empty() {
         return Err(MyErrors::MissingArgFilesError);
     }
+    let ignore_case = env::var("IGNORE_CASE").is_ok();
+    dbg!(env::var("IGNORE_CASE"));
+    dbg!(ignore_case);
 
-    Ok(Config::new(query, args))
+    Ok(Config::new(query, args).with_case_ignored(ignore_case))
 }
 
 #[cfg(test)]
@@ -42,5 +47,33 @@ mod test {
             String::from("file.txt"),
         ];
         assert!(parse_args(args).is_ok());
+    }
+
+    #[test]
+    fn ok_arguments_no_env() {
+        let args = vec![
+            String::from("name"),
+            String::from("query"),
+            String::from("file.txt"),
+        ];
+        let result = parse_args(args);
+        assert!(result.is_ok());
+        let result = result.unwrap();
+        assert!(!result.is_case_ignored());
+    }
+
+    #[test]
+    fn ok_arguments_env_ignore_case() {
+        unsafe {
+            env::set_var("IGNORE_CASE", "1");
+            let args = vec![
+                String::from("name"),
+                String::from("query"),
+                String::from("file.txt"),
+            ];
+            let result = parse_args(args);
+            let result = result.unwrap();
+            assert!(result.is_case_ignored());
+        }
     }
 }

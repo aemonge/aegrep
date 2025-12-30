@@ -10,6 +10,7 @@ fn main() {
             config.pattern.clone(),
             config.files.clone(),
             config.is_quiet(),
+            config.is_case_ignored(),
         ),
         // Ok(config) => aegrep::search(config.pattern, config.files, config.is_quiet()),
         Err(MyErrors::MissingArgPatternError) => {
