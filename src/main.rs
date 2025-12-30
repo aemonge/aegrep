@@ -1,8 +1,11 @@
 mod cli;
 use aegrep::types::MyErrors;
+use std::env;
 
 fn main() {
-    let _ = match cli::parse_args() {
+    let args: Vec<String> = env::args().collect();
+
+    let _ = match cli::parse_args(args) {
         Ok(config) => aegrep::search(
             config.pattern.clone(),
             config.files.clone(),
