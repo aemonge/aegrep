@@ -11,8 +11,6 @@ pub fn parse_args(mut args: Vec<String>) -> Result<Config, MyErrors> {
         return Err(MyErrors::MissingArgFilesError);
     }
     let ignore_case = env::var("IGNORE_CASE").is_ok();
-    dbg!(env::var("IGNORE_CASE"));
-    dbg!(ignore_case);
 
     Ok(Config::new(query, args).with_case_ignored(ignore_case))
 }
